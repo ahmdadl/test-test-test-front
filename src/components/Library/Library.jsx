@@ -2,8 +2,12 @@ import * as React from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./library.module.scss";
-import { Button, Checkbox, IconButton} from "@mui/material";
-import { RadioButtonCheckedRounded, Delete, CheckBox } from "@mui/icons-material";
+import { Button, Checkbox, IconButton } from "@mui/material";
+import {
+  RadioButtonCheckedRounded,
+  Delete,
+  CheckBox,
+} from "@mui/icons-material";
 import Modal from "../Modal/Modal";
 import DeleteModalContent from "../Modal/DeleteModalContent/DeleteModalContent";
 import axios from "../../axios";
@@ -13,7 +17,7 @@ export default function DataLibrary(props) {
   const navigate = useNavigate();
   const [rows, setRows] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [selectedRowId, setSelectedRowId] = React.useState();
+  const [selectedRowIds, setSelectedRowIds] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
   const [activeQuestion, setActiveQuestion] = React.useState();
 
@@ -56,11 +60,17 @@ export default function DataLibrary(props) {
       width: 100,
       renderCell: (params) => (
         <Checkbox
-          checked={params.id == selectedRowId}
+          // checked={params.id == setSelectedRowId}
           value={params.id}
           onChange={(e) => {
-            console.log(e.target.value);
-            setSelectedRowId(e.target.value);
+            // setSelectedRowId(e.target.value);
+            setSelectedRowIds((prevSelectedIds) => [
+              ...prevSelectedIds,
+              e.target.value,
+            ]);
+
+            console.log(e.target.checked);
+            e.target.checked = true;
           }}
         />
       ),
@@ -94,13 +104,14 @@ export default function DataLibrary(props) {
       width: 200,
     },
   ];
+  console.log(selectedRowIds);
 
   const fetchQuestions = React.useCallback(async () => {
     setLoading(true);
     const res = await axios.get(`/isAnswered`);
     const data = res.data;
-    console.log(data[0])
-     if (!!data.length) {
+    console.log(data[0]);
+    if (!!data.length) {
       setRows(
         data.map((item) => ({
           id: item._id,
@@ -112,7 +123,7 @@ export default function DataLibrary(props) {
           hasAnswered: item.isAnswered,
         }))
       );
-     }
+    }
     setLoading(false);
   }, []);
 
@@ -121,12 +132,12 @@ export default function DataLibrary(props) {
   }, [fetchQuestions]);
 
   const onClickAddSelect = () => {
-    console.log(selectedRowId)
+    console.log(selectedRowIds);
   };
 
-  const onClickEditQuestion = () => {
-    navigate(`/edit/${selectedRowId}`);
-  };
+  // const onClickEditQuestion = (e) => {
+  //    navigate(`/edit/${selectedRowId}`);
+  // };
 
   return (
     <>
@@ -141,7 +152,7 @@ export default function DataLibrary(props) {
           <Button variant="contained" onClick={onClickAddSelect}>
             Select
           </Button>
-          {/* <Button variant="contained" onClick={onClickEditQuestion}>
+          {/* <Button variant="contained" onClick={e=>onClickEditQuestion(e)}>
             Edit
           </Button> */}
         </div>
