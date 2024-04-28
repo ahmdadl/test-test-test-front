@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../../store/store";
 import { useForm } from "react-hook-form";
@@ -15,6 +15,7 @@ import {
   subDomainList,
   getDomainName,
   getSubDomainName,
+  comlixetyList,
 } from "../../config";
 import axios from "../../axios";
 import { toast } from "react-toastify";
@@ -39,16 +40,27 @@ const AddObject = () => {
   const [interactiveObjectTypes, setInteractiveObjectTypes] = React.useState(
     []
   );
+  const [topics, setTopics] = React.useState([]);
+  const [activeTopic, selectTopic] = React.useState({
+    _id: 0,
+    title: ''
+  });
 
   const getQuestionTypes = async () => {
     const res = await axios.get("interactive-object-types");
     setInteractiveObjectTypes(res.data);
-    const types = res.data.map((item) => item.typeName);
+    const types = [...res.data, { typeName: "true-false" }].map((item) => item.typeName);
     setTypes(types);
+  };
+
+  const getTopics = async () => {
+    const res = await axios.get("topics?paginate=false");
+    setTopics(res.data);
   };
 
   React.useEffect(() => {
     getQuestionTypes();
+    getTopics();
   }, []);
 
   const onClickExcelFile = () => {
@@ -63,6 +75,7 @@ const AddObject = () => {
     };
     const id = await saveObject(data);
     setFormState({ id, ...data });
+    return;
     const { type } = values;
     if (type === "MCQ") {
       navigate("/add-question/multiple-choice/manual");
@@ -154,12 +167,43 @@ const AddObject = () => {
                   </option>
                 ))}
               </Select>
-              <Input
+              <Select
                 label="topic"
-                name="topic"
+                name="topicId"
                 register={register}
                 errors={errors}
+                value={activeTopic._id}
+                onChange={(e) => {
+                  selectTopic(topics.find(topic => topic._id == e.target.value))
+                }}
+              >
+                {topics.length > 0 && topics.map((topic, idx) => (
+                  <option key={idx} value={topic._id}>{topic.title}</option>
+                ))}
+                </Select>
+                <input type="hidden" hidden name="topicTitle" value={activeTopic.title || ''} />
+            </div>
+            <div className={styles.row}>
+              <Input
+                label="answerDuration"
+                name="answerDuration"
+                register={register}
+                errors={errors}
+                type="number"
               />
+                
+              <Select
+                label="complexity"
+                name="complexity"
+                register={register}
+                errors={errors}
+              >
+                {comlixetyList.map((type, idx) => (
+                  <option key={idx} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </Select>
             </div>
             <div className={styles.row}>
               <Select

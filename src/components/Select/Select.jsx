@@ -6,7 +6,7 @@ const Select = (props) => {
   return (
     <label className={styles.select}>
       <span>{label}</span>
-      <select {...register(name, { required: true })} disabled={disabled}>
+      <select {...register(name, { required: true })} disabled={disabled} {...props}>
         <option value="">--Select an option--</option>
         {children}
       </select>

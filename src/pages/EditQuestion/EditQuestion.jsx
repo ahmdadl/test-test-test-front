@@ -61,6 +61,7 @@ const EditQuestion = () => {
     question_type: questionTypeList[0],
   });
   const [valid, setValid] = React.useState(false);
+  const [topics, setTopics] = React.useState([]);
   const navigate = useNavigate();
   const {
     register,
@@ -84,8 +85,14 @@ const EditQuestion = () => {
     };
   };
 
+  const getTopics = async () => {
+    const res = await axios.get("topics?paginate=false");
+    setTopics(res.data);
+  };
+
   React.useEffect(() => {
     getData();
+    getTopics();
   }, []);
 
   const checkValidity = () => {
@@ -183,12 +190,16 @@ const EditQuestion = () => {
                   </option>
                 ))}
               </Select>
-              <Input
+              <Select
                 label="topic"
                 name="topic"
                 register={register}
                 errors={errors}
-              />
+              >
+                {topics.length > 0 && topics.map((topic, idx) => (
+                  <option key={idx} value={topic.id}>{topic.title}</option>
+                ))}
+                </Select>
             </div>
             <div className={styles.row}>
               <Select
