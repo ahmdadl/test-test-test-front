@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import QuestionList from "../../components/QuestionList/QuestionList";
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -13,6 +13,11 @@ const QuizList = (props) => {
   
   const navigate = useNavigate();
   const { data: state, setFormState } = useStore();
+  const {id: quizId} = useParams();
+
+  const selectFromAllQuestions = () => {
+      navigate(`/quizzes/${quizId}/select-questions`)
+  };
   const SelectFromLibrary = () => {
     navigate("/library")
   };
@@ -38,7 +43,9 @@ const QuizList = (props) => {
         <Button variant="contained" color="info"  onClick={SelectFromLibrary}>
           <span>Select from Q-Bank</span>
         </Button>
-    
+        <Button variant="contained" color="info"  onClick={selectFromAllQuestions}>
+          <span>Select from All Questions</span>
+        </Button>
       </div>
       <QuestionList />
     </div>

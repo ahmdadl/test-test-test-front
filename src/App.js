@@ -33,6 +33,7 @@ import Test2 from "./pages/Test/Test2";
 import TopicsList from "./pages/TopicsList/TopicsList";
 import TopicsAdd from "./pages/TopicsAdd/TopicsAdd";
 import TopicsEdit from "./pages/TopicsEdit/TopicsEdit";
+import QuizSelectQuestions from "./pages/QuizSelectQuestions/QuizSelectQuestions";
 
 function App() {
   return (
@@ -92,6 +93,8 @@ function App() {
             <Route path="/topics" Component={TopicsList} />
             <Route path="/add-topic" Component={TopicsAdd} />
             <Route path="/edit-topic/:id" Component={TopicsEdit} />
+
+            <Route path="/quizzes/:id/select-questions" Component={QuizSelectQuestions} />
 
           </Routes>
           <Footer />
