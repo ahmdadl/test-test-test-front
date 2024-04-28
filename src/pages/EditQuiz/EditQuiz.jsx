@@ -39,7 +39,16 @@ const EditQuiz = () => {
   
 
   const fetchData = async () => {
-    const res = await axios.get(`/interactive-quizs/${id}`);
+    const res = await axios.get(`/interactive-quizs/${id}`).catch(err => {
+      if (err.response.status === 404) {
+        navigate("/");
+        toast.error("Quiz not found");
+        return;
+      }
+    });
+
+    if (!res || !res.data) return null;
+
     console.log(res.data);
     return {
       ...res.data,

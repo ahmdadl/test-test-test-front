@@ -112,7 +112,13 @@ export default function DataTable(props) {
 
   const fetchQuestions = React.useCallback(async () => {
     setLoading(true);
-    const res = await axios.get(`/interactive-quizs`);
+    const res = await axios.get(`/interactive-quizs`).catch(err => {
+      toast.error('an error occurred');
+      return;
+    });
+
+    if (!res || !res.data) return;
+
     const data = res.data;
     if (!!data.docs.length) {
       setRows(

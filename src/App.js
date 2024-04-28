@@ -30,6 +30,9 @@ import EditQuiz from "./pages/EditQuiz/EditQuiz";
 import EssayQuestion from "./pages/Essay-Question/EssayQuestion";
 import ScanAndUpload from "./pages/ScanAndUpload/ScanAndUpload";
 import Test2 from "./pages/Test/Test2";
+import TopicsList from "./pages/TopicsList/TopicsList";
+import TopicsAdd from "./pages/TopicsAdd/TopicsAdd";
+import TopicsEdit from "./pages/TopicsEdit/TopicsEdit";
 
 function App() {
   return (
@@ -85,6 +88,11 @@ function App() {
             <Route path="/excel-file" Component={ExcelFile} />
             <Route path="/test" Component={Test} />
             <Route path="/test2" Component={Test2} />
+
+            <Route path="/topics" Component={TopicsList} />
+            <Route path="/add-topic" Component={TopicsAdd} />
+            <Route path="/edit-topic/:id" Component={TopicsEdit} />
+
           </Routes>
           <Footer />
         </div>
