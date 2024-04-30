@@ -21,6 +21,7 @@ import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import CountdownTimer from './CountdownTimer';
 import ConfirmModalContent from '../../components/Modal/ConfirmModalContent/ConfirmModalContent';
 import QuizExamQuestion from './QuizExamQuestion';
+import QuizExamQuestionSection from './QuizExamQuestionSection';
 
 export default function QuizSelectQuestions(props) {
     const { id: quizId } = useParams();
@@ -30,7 +31,9 @@ export default function QuizSelectQuestions(props) {
     const navigate = useNavigate();
 
     const [questions, setQuestions] = React.useState([]);
-    const [activeQuestion, setActiveQuestions] = React.useState(0);
+    const [activeQuestion, setActiveQuestions] = React.useState({
+        _id: null,
+    });
 
     React.useEffect(() => {
         fetchQuestions();
@@ -63,10 +66,15 @@ export default function QuizSelectQuestions(props) {
         setQuiz(quiz);
 
         setLoading(true);
-        const res = await axios.get(`/interactive-objects`);
+        const res = await axios.get(`/questionInQuize/${quizId}`);
+
+        if (!res || !res.data) {
+            toast.error('error loading questions');
+            return;
+        }
+
         const data = res.data;
-        console.log(data.docs);
-        setQuestions(data.docs);
+        setQuestions(data);
         setLoading(false);
     }, []);
 
@@ -75,7 +83,7 @@ export default function QuizSelectQuestions(props) {
             setQuestions((prev) =>
                 prev.map((q) => {
                     if (q._id === activeQuestion._id) {
-                        return { ...q, isCorrect: true };
+                        return { ...q, isAnswerCorrect: true };
                     }
                     return q;
                 })
@@ -84,7 +92,7 @@ export default function QuizSelectQuestions(props) {
             setQuestions((prev) =>
                 prev.map((q) => {
                     if (q._id === activeQuestion._id) {
-                        return { ...q, isCorrect: false };
+                        return { ...q, isAnswerCorrect: false };
                     }
                     return q;
                 })
@@ -115,7 +123,7 @@ export default function QuizSelectQuestions(props) {
     const onFinishAttempt = () => {
         // check if all questions was answered
         const unansweredQuestions = questions.filter(
-            (q) => q.isCorrect === undefined
+            (q) => q.isAnswerCorrect === undefined
         );
 
         if (unansweredQuestions.length) {
@@ -128,8 +136,24 @@ export default function QuizSelectQuestions(props) {
 
     const showResultView = () => setActiveQuestions({ _id: 'result' });
 
+    const onAnswerQuestion = (q, isCorrect) => {
+        if (!q) return;
+
+        setQuestions((prev) =>
+            prev.map((question) => {
+                if (question._id === q._id) {
+                    question.isAnswerCorrect = isCorrect;
+                }
+
+                return question;
+            })
+        );
+
+        selectNextQuestion();
+    };
+
     return (
-        <>
+        <div style={{ padding: '1rem 2rem' }}>
             <Modal show={showModal} handleClose={closeModal}>
                 <ConfirmModalContent
                     handleClose={closeModal}
@@ -163,108 +187,43 @@ export default function QuizSelectQuestions(props) {
                                         ? styles.active
                                         : ''
                                 } ${
-                                    question.isCorrect
+                                    question.isAnswerCorrect
                                         ? styles.correct
-                                        : question.isCorrect === false
+                                        : question.isAnswerCorrect === false
                                         ? styles.notCorrect
                                         : ''
                                 } `}
                             >
-                                {question.isCorrect === true && <Check />}
-                                {question.isCorrect === false && <Error />}
+                                {question.isAnswerCorrect === true && <Check />}
+                                {question.isAnswerCorrect === false && (
+                                    <Error />
+                                )}
                             </div>
                         </div>
                     ))}
                 </div>
                 <div>
-                    <CountdownTimer
-                        minutesLeft={Number(0.1)}
-                        onTimeUp={onTimeUp}
-                    />
+                    {questions.length && (
+                        <CountdownTimer
+                            minutesLeft={questions?.reduce(
+                                (a, c) => (a += Number(c.answerDuration)),
+                                0
+                            )}
+                            onTimeUp={onTimeUp}
+                        />
+                    )}
 
                     <button onClick={onFinishAttempt}>Finish attempt</button>
                 </div>
             </div>
 
             <div className={styles.questionsWrapper}>
-                {!activeQuestion._id && (
-                    <>
-                        <h4>Questions list</h4>
-                        <p>Please Answer all your quiz questions</p>
-                    </>
-                )}
-                {activeQuestion._id === 'result' && (
-                    <>
-                        <h4>Quiz Result</h4>
-                        <h5 style={{ color: 'teal' }}>
-                            Questions Answered correct:{' '}
-                            {
-                                questions.filter((q) => q.isCorrect === true)
-                                    .length
-                            }{' '}
-                            (
-                            {
-                                questions.filter((q) => q.isCorrect === true)
-                                    .length
-                            }{' '}
-                            / {questions.length})
-                        </h5>
-                        <h5 style={{ color: 'red' }}>
-                            Questions Answered Wrong:{' '}
-                            {
-                                questions.filter((q) => q.isCorrect === false)
-                                    .length
-                            }{' '}
-                            (
-                            {
-                                questions.filter((q) => q.isCorrect === false)
-                                    .length
-                            }{' '}
-                            / {questions.length})
-                        </h5>
-                        <h5 style={{ color: 'gray' }}>
-                            Questions not answered:{' '}
-                            {
-                                questions.filter(
-                                    (q) => q.isCorrect === undefined
-                                ).length
-                            }{' '}
-                            (
-                            {
-                                questions.filter(
-                                    (q) => q.isCorrect === undefined
-                                ).length
-                            }{' '}
-                            / {questions.length})
-                        </h5>
-                    </>
-                )}
-                {!!activeQuestion._id && (
-                    <>
-                        <QuizExamQuestion question={activeQuestion} />
-
-                        {!activeQuestion.canNotBeAnswered &&
-                            activeQuestion.isCorrect === undefined &&
-                            activeQuestion._id !== 'result' && (
-                                <div className='actions'>
-                                    <button style={{}}>
-                                        Answer
-                                    </button>
-                                    {/* <button
-                                        onClick={() => answerQuestion('good')}
-                                    >
-                                        correct
-                                    </button>
-                                    <button
-                                        onClick={() => answerQuestion('bad')}
-                                    >
-                                        not correct
-                                    </button> */}
-                                </div>
-                            )}
-                    </>
-                )}
+                <QuizExamQuestionSection
+                    questions={questions}
+                    question={activeQuestion}
+                    onAnswer={onAnswerQuestion}
+                />
             </div>
-        </>
+        </div>
     );
 }
