@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./table.module.scss";
 import { Button, IconButton, Radio } from "@mui/material";
-import { RadioButtonCheckedRounded, Delete } from "@mui/icons-material";
+import { RadioButtonCheckedRounded, Delete, Edit, QuestionAnswer, QuestionMark } from "@mui/icons-material";
 import Modal from "../Modal/Modal";
 import DeleteModalContent from "../Modal/DeleteModalContent/DeleteModalContent";
 import axios from "../../axios";
@@ -23,6 +23,10 @@ export default function DataTable(props) {
   const onDeleteQuestion = (id) => {
     openModal();
     setActiveQuestion(id);
+  };
+
+  const onTakeExam = (id) => {
+    navigate(`/quizzes/${id}/exam`);
   };
 
   const onConfirmDelete = async () => {
@@ -107,6 +111,22 @@ export default function DataTable(props) {
       field: "complexity",
       headerName: "Complexity",
       width: 100,
+    },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 100,
+      renderCell: (params) => {
+        return (
+          <IconButton
+            aria-label="takeExam"
+            color="info"
+            onClick={() => onTakeExam(params.id)}
+          >
+            <QuestionMark />
+          </IconButton>
+        );
+      },
     },
   ];
 

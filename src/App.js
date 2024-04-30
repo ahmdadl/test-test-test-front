@@ -34,6 +34,7 @@ import TopicsList from "./pages/TopicsList/TopicsList";
 import TopicsAdd from "./pages/TopicsAdd/TopicsAdd";
 import TopicsEdit from "./pages/TopicsEdit/TopicsEdit";
 import QuizSelectQuestions from "./pages/QuizSelectQuestions/QuizSelectQuestions";
+import QuizExam from "./pages/QuizExam";
 
 function App() {
   return (
@@ -95,6 +96,8 @@ function App() {
             <Route path="/edit-topic/:id" Component={TopicsEdit} />
 
             <Route path="/quizzes/:id/select-questions" Component={QuizSelectQuestions} />
+
+            <Route path="/quizzes/:id/exam" Component={QuizExam} />
 
           </Routes>
           <Footer />

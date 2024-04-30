@@ -49,7 +49,7 @@ const AddObject = () => {
   const getQuestionTypes = async () => {
     const res = await axios.get("interactive-object-types");
     setInteractiveObjectTypes(res.data);
-    const types = [...res.data, { typeName: "true-false" }].map((item) => item.typeName);
+    const types = res.data.map((item) => item.typeName);
     setTypes(types);
   };
 
@@ -75,15 +75,14 @@ const AddObject = () => {
     };
     const id = await saveObject(data);
     setFormState({ id, ...data });
-    return;
     const { type } = values;
     if (type === "MCQ") {
       navigate("/add-question/multiple-choice/manual");
     } else if (type === "true-false") {
       navigate("/add-question/true-false/manual");
-    } else if (type === "fill-in-the-blank") {
+    } else if (type === "fill-in-the-blank" || type === 'FillTheBlank') {
       navigate("/add-question/fill-in-the-blank/manual");
-    } else if (type === "drag-the-words") {
+    } else if (type === "drag-the-words" || type === 'DragTheWords') {
       navigate("/add-question/drag-the-words/manual");
     } else if (values.questionType === "essay-question") {
       navigate("/add-question/essay-question/manual");
@@ -167,7 +166,7 @@ const AddObject = () => {
                   </option>
                 ))}
               </Select>
-              <Select
+              {/* <Select
                 label="topic"
                 name="topicId"
                 register={register}
@@ -180,7 +179,7 @@ const AddObject = () => {
                 {topics.length > 0 && topics.map((topic, idx) => (
                   <option key={idx} value={topic._id}>{topic.title}</option>
                 ))}
-                </Select>
+                </Select> */}
                 <input type="hidden" hidden name="topicTitle" value={activeTopic.title || ''} />
             </div>
             <div className={styles.row}>
