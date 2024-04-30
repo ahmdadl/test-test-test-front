@@ -38,72 +38,92 @@ import QuizExam from "./pages/QuizExam";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <div
-          style={{
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Navbar />
-          <ToastContainer />
-          <Routes>
-            <Route path="/" Component={Home} />
-            <Route path="/true-false" Component={TrueFalse} />
-            <Route path="/fill-blank" Component={FillBlank} />
-            <Route path="/multiple-choice" Component={MultipleChoice} />
-            <Route path="/show/:id" Component={Show} />
-            <Route path="/bulk" Component={Bulk} />
-            <Route path="/add-question" Component={AddObject} />
-            <Route path="/add-quiz" Component={AddQuiz} />
-            <Route path="/quiz-list" Component={QuizList} />
-            <Route path="/edit-quiz-list/:id" Component={QuizList} />
-            <Route path="/library" Component={HomeForLibrary} />
-            <Route path="/scan-and-upload" Component={ScanAndUpload} />
-            <Route
-              path="/add-question/multiple-choice/manual"
-              Component={MultipleChoiceForm}
-            />
-            <Route
-              path="/add-question/drag-the-words/manual"
-              Component={DragTheWords}
-            />
-            <Route
-              path="/add-question/true-false/manual"
-              Component={TrueFalseForm}
-            />
-           <Route path="/add-question/filltheblanks/manual" Component={FillBlank} />
-           <Route path="/add-question/filltheblanks/manual/:id" Component={FillBlank} /> 
-            <Route
-              path="/add-question/essay-question/manual"
-              Component={EssayQuestion}
-            />
+      <ThemeProvider theme={theme}>
+          <BrowserRouter>
+              <div
+                  style={{
+                      minHeight: '100vh',
+                      display: 'flex',
+                      flexDirection: 'column',
+                  }}
+              >
+                  <Navbar />
+                  <ToastContainer />
+                  <Routes>
+                      <Route path='/' Component={Home} />
+                      <Route path='/true-false' Component={TrueFalse} />
+                      <Route path='/fill-blank' Component={FillBlank} />
+                      <Route
+                          path='/multiple-choice'
+                          Component={MultipleChoice}
+                      />
+                      <Route path='/show/:id' Component={Show} />
+                      <Route path='/bulk' Component={Bulk} />
+                      <Route path='/add-question' Component={AddObject} />
+                      <Route path='/add-quiz' Component={AddQuiz} />
+                      <Route path='/quiz-list' Component={QuizList} />
+                      <Route path='/edit-quiz-list/:id' Component={QuizList} />
+                      <Route path='/library' Component={HomeForLibrary} />
+                      <Route
+                          path='/scan-and-upload'
+                          Component={ScanAndUpload}
+                      />
+                      <Route
+                          path='/add-question/:id/multiple-choice/manual'
+                          Component={MultipleChoiceForm}
+                      />
+                      <Route
+                          path='/add-question/drag-the-words/manual'
+                          Component={DragTheWords}
+                      />
+                      <Route
+                          path='/add-question/:id/true-false/manual'
+                          Component={TrueFalseForm}
+                      />
+                      <Route
+                          path='/add-question/:id/fill-in-the-blank/manual'
+                          Component={FillBlank}
+                      />
+                      <Route
+                          path='/add-question/filltheblanks/manual/:id'
+                          Component={FillBlank}
+                      />
+                      <Route
+                          path='/add-question/essay-question/manual'
+                          Component={EssayQuestion}
+                      />
 
-            <Route path="/dragthewords" Component={DragTheWords} />
-            <Route path="/dragthewords/:id" Component={DragTheWords} />
-            {/* <Route path="/edit/:id" Component={EditQuestion} /> */}
-            <Route path="/edit/:id" Component={EditObject} />
-            <Route path="/editQuiz/:id" Component={EditQuiz} />
-            <Route path="/edit-question/:id" Component={MultipleChoiceForm} />
-            <Route path="/excel-file" Component={ExcelFile} />
-            <Route path="/test" Component={Test} />
-            <Route path="/test2" Component={Test2} />
+                      <Route path='/dragthewords' Component={DragTheWords} />
+                      <Route
+                          path='/dragthewords/:id'
+                          Component={DragTheWords}
+                      />
+                      {/* <Route path="/edit/:id" Component={EditQuestion} /> */}
+                      <Route path='/edit/:id' Component={EditObject} />
+                      <Route path='/editQuiz/:id' Component={EditQuiz} />
+                      <Route
+                          path='/edit-question/:id'
+                          Component={MultipleChoiceForm}
+                      />
+                      <Route path='/excel-file' Component={ExcelFile} />
+                      <Route path='/test' Component={Test} />
+                      <Route path='/test2' Component={Test2} />
 
-            <Route path="/topics" Component={TopicsList} />
-            <Route path="/add-topic" Component={TopicsAdd} />
-            <Route path="/edit-topic/:id" Component={TopicsEdit} />
+                      <Route path='/topics' Component={TopicsList} />
+                      <Route path='/add-topic' Component={TopicsAdd} />
+                      <Route path='/edit-topic/:id' Component={TopicsEdit} />
 
-            <Route path="/quizzes/:id/select-questions" Component={QuizSelectQuestions} />
+                      <Route
+                          path='/quizzes/:id/select-questions'
+                          Component={QuizSelectQuestions}
+                      />
 
-            <Route path="/quizzes/:id/exam" Component={QuizExam} />
-
-          </Routes>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
+                      <Route path='/quizzes/:id/exam' Component={QuizExam} />
+                  </Routes>
+                  <Footer />
+              </div>
+          </BrowserRouter>
+      </ThemeProvider>
   );
 }
 

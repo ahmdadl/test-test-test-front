@@ -73,15 +73,15 @@ const AddObject = () => {
       domainName: getDomainName(values.domainId),
       subDomainName: getSubDomainName(values.domainId, values.subDomainId),
     };
-    const id = await saveObject(data);
-    setFormState({ id, ...data });
+    const savedQuestion = await saveObject(data);
+    setFormState({ savedQuestion, ...data });
     const { type } = values;
     if (type === "MCQ") {
-      navigate("/add-question/multiple-choice/manual");
+      navigate(`/add-question/${savedQuestion._id}/multiple-choice/manual`);
     } else if (type === "true-false") {
-      navigate("/add-question/true-false/manual");
+      navigate(`/add-question/${savedQuestion._id}/true-false/manual`);
     } else if (type === "fill-in-the-blank" || type === 'FillTheBlank') {
-      navigate("/add-question/fill-in-the-blank/manual");
+      navigate(`/add-question/${savedQuestion._id}/fill-in-the-blank/manual`);
     } else if (type === "drag-the-words" || type === 'DragTheWords') {
       navigate("/add-question/drag-the-words/manual");
     } else if (values.questionType === "essay-question") {
@@ -166,7 +166,7 @@ const AddObject = () => {
                   </option>
                 ))}
               </Select>
-              {/* <Select
+              <Select
                 label="topic"
                 name="topicId"
                 register={register}
@@ -179,7 +179,7 @@ const AddObject = () => {
                 {topics.length > 0 && topics.map((topic, idx) => (
                   <option key={idx} value={topic._id}>{topic.title}</option>
                 ))}
-                </Select> */}
+                </Select>
                 <input type="hidden" hidden name="topicTitle" value={activeTopic.title || ''} />
             </div>
             <div className={styles.row}>
