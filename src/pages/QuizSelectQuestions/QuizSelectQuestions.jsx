@@ -135,31 +135,6 @@ export default function QuizSelectQuestions(props) {
             headerName: 'Sub Domain',
             flex: 0.8,
         },
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            flex: 0.3,
-            renderCell: (params) => {
-                return (
-                    <>
-                        <IconButton
-                            aria-label='edit'
-                            color='info'
-                            onClick={() => onClickEditQuestion(params.id)}
-                        >
-                            <Edit />
-                        </IconButton>
-                        <IconButton
-                            aria-label='delete'
-                            color='error'
-                            onClick={() => onDeleteQuestion(params.id)}
-                        >
-                            <Delete />
-                        </IconButton>
-                    </>
-                );
-            },
-        },
     ];
 
     const fetchQuiz = async () => {
@@ -175,9 +150,9 @@ export default function QuizSelectQuestions(props) {
 
     const fetchQuestions = React.useCallback(async () => {
         const quiz = await fetchQuiz();
-        
+
         if (!quiz) return;
-        
+
         const data1 = {
             ...state,
         };
@@ -196,11 +171,13 @@ export default function QuizSelectQuestions(props) {
                     dateModified: new Date(item.createdAt).toLocaleDateString(
                         'en-GB'
                     ),
-                    isSelected: !!quiz.questionList.find(q => q._id == item._id)
+                    isSelected: !!quiz.questionList.find(
+                        (q) => q._id == item._id
+                    ),
                 }))
             );
 
-            setSelectedRowIds(quiz.questionList.map(q => q._id))
+            setSelectedRowIds(quiz.questionList.map((q) => q._id));
         }
         setLoading(false);
     }, []);
@@ -228,7 +205,7 @@ export default function QuizSelectQuestions(props) {
                                 selectedRowIds.length > 0 ? 'teal' : 'gray',
                         }}
                     >
-                        Add Selected Questions
+                        Save Selected Questions
                     </Button>
                     <Button variant='contained' onClick={onClickAddQuestion}>
                         Add new Question

@@ -29,7 +29,6 @@ export default function TopicsList(props) {
         fetchTopics();
     }, []);
 
-
     const onClickAddTopic = () => {
         navigate('/add-topic');
     };
@@ -69,29 +68,29 @@ export default function TopicsList(props) {
         {
             field: 'subDomain',
             headerName: 'Sub Domain',
-            flex: .8,
+            flex: 0.8,
         },
         {
             field: 'actions',
             headerName: 'Actions',
-            flex: .3,
+            flex: 0.3,
             renderCell: (params) => {
                 return (
                     <>
-                    <IconButton
-                        aria-label='edit'
-                        color='info'
-                        onClick={() => onClickEditQuestion(params.id)}
-                    >
-                        <Edit />
-                    </IconButton>
-                    <IconButton
-                        aria-label='delete'
-                        color='error'
-                        onClick={() => onDeleteTopic(params.id)}
-                    >
-                        <Delete />
-                    </IconButton>
+                        <IconButton
+                            aria-label='edit'
+                            color='info'
+                            onClick={() => onClickEditQuestion(params.id)}
+                        >
+                            <Edit />
+                        </IconButton>
+                        <IconButton
+                            aria-label='delete'
+                            color='error'
+                            onClick={() => onDeleteTopic(params.id)}
+                        >
+                            <Delete />
+                        </IconButton>
                     </>
                 );
             },
@@ -138,9 +137,6 @@ export default function TopicsList(props) {
                 <div className={styles.actions}>
                     <Button variant='contained' onClick={onClickAddTopic}>
                         Add Topic
-                    </Button>
-                    <Button variant='contained' onClick={onClickEditQuestion}>
-                        Edit
                     </Button>
                 </div>
             </div>
