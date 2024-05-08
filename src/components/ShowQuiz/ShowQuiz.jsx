@@ -7,6 +7,7 @@ import {
     RadioButtonCheckedRounded,
     Delete,
     CheckBox,
+    RemoveCircle,
 } from '@mui/icons-material';
 import Modal from '../Modal/Modal';
 import DeleteModalContent from '../Modal/DeleteModalContent/DeleteModalContent';
@@ -120,7 +121,52 @@ export default function DataShowQuiz(props) {
                 );
             },
         },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            width: 100,
+            renderCell: (params) => {
+                return (
+                    <IconButton
+                        onClick={() => removeQuestionInList(params.row.id)}
+                        color='error'
+                    >
+                        <RemoveCircle />
+                    </IconButton>
+                );
+            },
+        },
     ];
+
+    const removeQuestionInList = async (qid) => {
+        const loaderId = toast.loading('Removing...');
+        const res = await axios
+            .delete(`/removeQuestionFromQuiz/${id}/${qid}`)
+            .catch((err) => {
+                toast.update(loaderId, {
+                    render: 'an error occurred',
+                    type: 'error',
+                    isLoading: false,
+                });
+            });
+        if (!res || !res.data) {
+            {
+                toast.update(loaderId, {
+                    render: 'an error occurred',
+                    type: 'error',
+                    isLoading: false,
+                });
+            }
+            return;
+        }
+
+        toast.update(loaderId, {
+            render: 'Questions removed ...',
+            type: 'success',
+            isLoading: false,
+        });
+        fetchData(id);
+    };
 
     const fetchQuestions = React.useCallback(async () => {
         const data1 = {
