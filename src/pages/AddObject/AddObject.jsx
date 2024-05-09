@@ -54,7 +54,9 @@ const AddObject = () => {
     };
 
     const getTopics = async () => {
-        const res = await axios.get('topics?paginate=false');
+        const res = await axios.get(
+            'http://localhost:4000/api/topics?paginate=false'
+        );
         setTopics(res.data);
     };
 

@@ -52,7 +52,7 @@ const TopicsAdd = () => {
     };
 
     const saveObject = async (data) => {
-        const res = await axios.post('/topics', {
+        const res = await axios.post('http://localhost:4000/api/topics', {
             ...data,
         });
         console.log(data, 'data');

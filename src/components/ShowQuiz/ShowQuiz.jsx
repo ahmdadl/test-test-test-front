@@ -168,9 +168,7 @@ export default function DataShowQuiz(props) {
         };
         setLoading(true);
         console.log(data1);
-        const res = await axios.get(
-            `/questionInQuize/66053cf9a4fa64136ce6e60f`
-        );
+        const res = await axios.get(`/questionInQuize/${id}`);
         const data = res.data;
         console.log(data);
         if (!!data.length) {
