@@ -55,20 +55,7 @@ export default function QuizCriteria(props) {
             });
         }
 
-        const response = await axios
-            .patch(`http://localhost:4000/api/interactive-quizs/${quizId}`, {
-                questionList: res.data.ids,
-            })
-            .catch((err) => {
-                toast.update(loaderId, {
-                    render: 'an error occurred',
-                    type: 'error',
-                    isLoading: false,
-                });
-                return;
-            });
-
-        // console.log(response, response.data);
+        console.log(res.data);
 
         toast.update(loaderId, {
             render: 'saved',
