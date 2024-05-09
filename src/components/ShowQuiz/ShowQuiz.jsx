@@ -41,14 +41,8 @@ export default function DataShowQuiz(props) {
 
     const onConfirmDelete = async () => {
         closeModal();
-        try {
-            const res = await axios.delete(`/question/${activeQuestion}`);
-            console.log(res.data);
-            toast.success('Question deleted successfully');
-            await fetchQuestions();
-        } catch (error) {
-            console.log(error);
-        }
+
+        removeQuestionInList(activeQuestion);
     };
 
     const renderColorStatus = (status) => {
@@ -128,7 +122,7 @@ export default function DataShowQuiz(props) {
             renderCell: (params) => {
                 return (
                     <IconButton
-                        onClick={() => removeQuestionInList(params.row.id)}
+                        onClick={() => onDeleteQuestion(params.row.id)}
                         color='error'
                     >
                         <RemoveCircle />
@@ -294,6 +288,8 @@ export default function DataShowQuiz(props) {
                 <DeleteModalContent
                     handleClose={closeModal}
                     onDelete={onConfirmDelete}
+                    title='Confirm Remove'
+                    message='Are you sure to remove this question?'
                 />
             </Modal>
             <div className={styles.table}>

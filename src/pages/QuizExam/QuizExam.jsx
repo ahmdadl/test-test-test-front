@@ -111,6 +111,8 @@ export default function QuizSelectQuestions(props) {
     };
 
     const onTimeUp = () => {
+        return;
+
         setQuestions((prev) =>
             prev.map((q) => {
                 q.canNotBeAnswered = true;
@@ -158,6 +160,8 @@ export default function QuizSelectQuestions(props) {
                 <ConfirmModalContent
                     handleClose={closeModal}
                     onDelete={onConfirmDelete}
+                    title='Exit Exam'
+                    message='Are you sure to exit this exam?'
                 />
             </Modal>
 
