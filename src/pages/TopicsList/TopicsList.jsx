@@ -62,7 +62,7 @@ export default function TopicsList(props) {
             headerName: 'Title',
             flex: 1,
             renderCell: (params) => {
-                return <Link to={`/show/${params.id}`}>{params.row.name}</Link>;
+                return params.row.name;
             },
         },
         {
