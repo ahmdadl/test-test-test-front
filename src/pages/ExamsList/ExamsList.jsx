@@ -59,21 +59,28 @@ export default function ExamsList(props) {
 
     const columns = [
         {
-            field: 'title',
-            headerName: 'Title',
+            field: 'name',
+            headerName: 'Name',
             flex: 1,
-            renderCell: (params) => {
-                return params.row.name;
-            },
         },
         {
-            field: 'subDomain',
-            headerName: 'Sub Domain',
+            field: 'studentName',
+            headerName: 'Student Name',
             flex: 0.8,
         },
         {
-            field: 'questionCount',
-            headerName: 'Questions Count',
+            field: 'quizTitle',
+            headerName: 'Quiz Title',
+            flex: 1,
+        },
+        {
+            field: 'isPassed',
+            headerName: 'Is Passed',
+            flex: 1,
+        },
+        {
+            field: 'successPercentage',
+            headerName: 'Percentage',
             flex: 1,
         },
         {
@@ -116,8 +123,11 @@ export default function ExamsList(props) {
             setRows(
                 data.docs.map((item) => ({
                     id: item._id,
-                    name: item.title,
-                    subDomain: item.subDomainName,
+                    name: item.name,
+                    studentName: item.studentName,
+                    quizTitle: item.quizTitle,
+                    isPassed: item.isPassed,
+                    successPercentage: item.successPercentage,
                     dateModified: new Date(item.createdAt).toLocaleDateString(
                         'en-GB'
                     ),
