@@ -1,12 +1,20 @@
+import {
+    FormControl,
+    Input,
+    InputLabel,
+    MenuItem,
+    Select,
+} from '@mui/material';
 import QuizExamQuestion from './QuizExamQuestion';
 
 export default function QuizExamQuestionSection({
     questions,
     question,
     onAnswer,
+    studentsList,
+    activeStudent,
+    onSelectStudent,
 }) {
-    console.log(question);
-
     const answerQuestion = () => {
         let answer = document.querySelector('input[name="answer"]');
         if (question.type === 'MCQ' || question.type === 'true-false') {
@@ -17,7 +25,7 @@ export default function QuizExamQuestionSection({
         // validate if question answer was correct
         let correct = false;
         if (question.type === 'MCQ') {
-            const correctAnswer = question.parameters.answers.find(
+            const correctAnswer = question.parameters?.answers?.find(
                 (a) => a.correct
             );
             correct = answer.value === correctAnswer.id;
@@ -32,8 +40,10 @@ export default function QuizExamQuestionSection({
             correct = answer.value === question.parameters.answer;
         }
 
-        onAnswer(question, correct);
+        onAnswer(question, correct, answer.value);
     };
+
+    console.log(question._id);
 
     return (
         <>
@@ -41,6 +51,55 @@ export default function QuizExamQuestionSection({
                 <>
                     <h4>Questions list</h4>
                     <p>Please Answer all your quiz questions</p>
+
+                    <div style={{ width: '60%' }}>
+                        <Input
+                            label='Exam Name'
+                            name='examName'
+                            placeholder='Exam Name'
+                            id='examName'
+                            type='text'
+                            style={{ width: '100%', marginBottom: '2.3rem' }}
+                            defaultValue={activeStudent?.exam ?? ''}
+                        />
+
+                        <FormControl fullWidth>
+                            <InputLabel id='demo-simple-select-label'>
+                                Select Student
+                            </InputLabel>
+                            <Select
+                                labelId='demo-simple-select-label'
+                                id='demo-simple-select'
+                                label='Select Student'
+                                placeholder='Select Student'
+                                name='student'
+                                required
+                                style={{ width: '100%', margin: '1.2rem 0' }}
+                                value={activeStudent?._id ?? ''}
+                                onChange={(e) =>
+                                    onSelectStudent({
+                                        _id: e.target.value,
+                                        exam: document.querySelector(
+                                            '#examName'
+                                        )?.value,
+                                        name: studentsList.find(
+                                            (x) => x._id == e.target.value
+                                        )?.name,
+                                    })
+                                }
+                            >
+                                {studentsList &&
+                                    studentsList.map((item, idx) => (
+                                        <MenuItem
+                                            key={item._id}
+                                            value={String(item._id)}
+                                        >
+                                            {item.name}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        </FormControl>
+                    </div>
                 </>
             )}
             {question._id === 'result' && (

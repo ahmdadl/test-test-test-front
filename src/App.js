@@ -39,6 +39,7 @@ import QuizCriteria from './pages/QuizCriteria/QuizCriteria';
 import StudentsList from './pages/Students/StudentsList';
 import StudentsAdd from './pages/Students/StudentsAdd';
 import StudentsEdit from './pages/Students/StudentsEdit';
+import ExamsList from './pages/ExamsList';
 
 function App() {
     return (
@@ -126,6 +127,8 @@ function App() {
                             path='/edit-student/:id'
                             Component={StudentsEdit}
                         />
+
+                        <Route path='/exams' Component={ExamsList} />
 
                         <Route
                             path='/quizzes/:id/select-questions'

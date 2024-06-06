@@ -35,8 +35,14 @@ export default function QuizSelectQuestions(props) {
         _id: null,
     });
 
+    const [studentsList, setStudents] = React.useState([]);
+    const [activeStudent, setActiveStudent] = React.useState({
+        _id: null,
+    });
+
     React.useEffect(() => {
         fetchQuestions();
+        fetchStudents();
     }, []);
 
     const closeModal = () => setShowModal(false);
@@ -63,7 +69,7 @@ export default function QuizSelectQuestions(props) {
 
         if (!quizResponse) return;
 
-        setQuiz(quiz);
+        setQuiz(quizResponse);
 
         setLoading(true);
         const res = await axios.get(`/questionInQuize/${quizId}`);
@@ -73,8 +79,25 @@ export default function QuizSelectQuestions(props) {
             return;
         }
 
+        console.log(res.data);
+
         const data = res.data;
-        setQuestions(data);
+        setQuestions([...data.filter((x) => x.parameters)]);
+        // console.log(data);
+        setLoading(false);
+    }, []);
+
+    const fetchStudents = React.useCallback(async () => {
+        setLoading(true);
+        const res = await axios.get(`/students`, { params: { limit: 500 } });
+
+        if (!res || !res.data) {
+            toast.error('error loading students');
+            return;
+        }
+
+        const data = res.data.docs;
+        setStudents(data);
         setLoading(false);
     }, []);
 
@@ -132,19 +155,71 @@ export default function QuizSelectQuestions(props) {
             return openModal();
         }
 
+        if (!activeStudent?._id) {
+            return toast.error('Please select student');
+        }
+
         // show result
         showResultView();
     };
 
-    const showResultView = () => setActiveQuestions({ _id: 'result' });
+    const calculateResult = () => {
+        const answered = questions.filter(
+            (q) => q.isAnswerCorrect === true
+        ).length;
+        const notAnswered = questions.filter(
+            (q) => q.isAnswerCorrect !== true
+        ).length;
+        const total = answered + notAnswered;
 
-    const onAnswerQuestion = (q, isCorrect) => {
+        return {
+            isPassed: answered > notAnswered,
+            percentage: Math.round((answered / total) * 100),
+        };
+    };
+
+    const showResultView = () => {
+        setActiveQuestions({ _id: 'result' });
+
+        // save exam results
+        const calculatedResult = calculateResult();
+        const data = {
+            name: activeStudent.exam,
+            studentId: activeStudent._id,
+            studentName: activeStudent.name,
+            quizId: quiz._id,
+            quizTitle: quiz.quizName,
+            isPassed: calculatedResult.isPassed,
+            successPercentage: calculatedResult.percentage,
+            questionList: questions.map((q) => ({
+                questionId: q._id,
+                questionName: q.questionName,
+                studentId: activeStudent._id,
+                studentTitle: activeStudent.name,
+                answer: q.answerValue,
+                isSuccess: q.isAnswerCorrect,
+            })),
+        };
+
+        // save exam results
+        axios
+            .post('/exams', data)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const onAnswerQuestion = (q, isCorrect, answerValue) => {
         if (!q) return;
 
         setQuestions((prev) =>
             prev.map((question) => {
                 if (question._id === q._id) {
                     question.isAnswerCorrect = isCorrect;
+                    question.answerValue = answerValue;
                 }
 
                 return question;
@@ -152,6 +227,10 @@ export default function QuizSelectQuestions(props) {
         );
 
         selectNextQuestion();
+    };
+
+    const onSelectStudent = (student) => {
+        setActiveStudent(student);
     };
 
     return (
@@ -226,6 +305,9 @@ export default function QuizSelectQuestions(props) {
                     questions={questions}
                     question={activeQuestion}
                     onAnswer={onAnswerQuestion}
+                    studentsList={studentsList}
+                    onSelectStudent={onSelectStudent}
+                    activeStudent={activeStudent}
                 />
             </div>
         </div>
