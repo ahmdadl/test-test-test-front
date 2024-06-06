@@ -40,6 +40,7 @@ import StudentsList from './pages/Students/StudentsList';
 import StudentsAdd from './pages/Students/StudentsAdd';
 import StudentsEdit from './pages/Students/StudentsEdit';
 import ExamsList from './pages/ExamsList';
+import QuizExamsList from './pages/QuizList/QuizExamsList/QuizExamsList';
 
 function App() {
     return (
@@ -140,6 +141,11 @@ function App() {
                         <Route
                             path='/quizzes/:id/criteria'
                             Component={QuizCriteria}
+                        />
+
+                        <Route
+                            path='/quizzes/:id/exams-list'
+                            Component={QuizExamsList}
                         />
                     </Routes>
                     <Footer />

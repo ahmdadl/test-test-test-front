@@ -9,6 +9,7 @@ import {
     Edit,
     QuestionAnswer,
     QuestionMark,
+    List,
 } from '@mui/icons-material';
 import Modal from '../Modal/Modal';
 import DeleteModalContent from '../Modal/DeleteModalContent/DeleteModalContent';
@@ -33,6 +34,10 @@ export default function DataTable(props) {
 
     const onTakeExam = (id) => {
         navigate(`/quizzes/${id}/exam`);
+    };
+
+    const onShowExams = (id) => {
+        navigate(`/quizzes/${id}/exams-list`);
     };
 
     const onConfirmDelete = async () => {
@@ -124,13 +129,23 @@ export default function DataTable(props) {
             width: 100,
             renderCell: (params) => {
                 return (
-                    <IconButton
-                        aria-label='takeExam'
-                        color='info'
-                        onClick={() => onTakeExam(params.id)}
-                    >
-                        <QuestionMark />
-                    </IconButton>
+                    <>
+                        <IconButton
+                            aria-label='takeExam'
+                            color='info'
+                            onClick={() => onTakeExam(params.id)}
+                        >
+                            <QuestionMark />
+                        </IconButton>
+                        <IconButton
+                            style={{ marginLeft: '.5rem' }}
+                            aria-label='takeExam'
+                            color='info'
+                            onClick={() => onShowExams(params.id)}
+                        >
+                            <List />
+                        </IconButton>
+                    </>
                 );
             },
         },
