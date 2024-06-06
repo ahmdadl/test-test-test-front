@@ -41,6 +41,7 @@ import StudentsAdd from './pages/Students/StudentsAdd';
 import StudentsEdit from './pages/Students/StudentsEdit';
 import ExamsList from './pages/ExamsList';
 import QuizExamsList from './pages/QuizList/QuizExamsList/QuizExamsList';
+import ExamsQuestions from './pages/ExamsList/ExamsListQuestions';
 
 function App() {
     return (
@@ -130,6 +131,10 @@ function App() {
                         />
 
                         <Route path='/exams' Component={ExamsList} />
+                        <Route
+                            path='/exams/:id/questions'
+                            Component={ExamsQuestions}
+                        />
 
                         <Route
                             path='/quizzes/:id/select-questions'

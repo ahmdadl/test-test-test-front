@@ -36,7 +36,7 @@ export default function QuizExamsList(props) {
     };
 
     const onClickEditQuestion = (id = null) => {
-        navigate(`/edit-exam/${id ?? selectedRowId}`);
+        navigate(`/exams/${id ?? selectedRowId}/questions`);
     };
     const closeModal = () => setShowModal(false);
     const openModal = () => setShowModal(true);

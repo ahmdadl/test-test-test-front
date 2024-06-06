@@ -9,6 +9,7 @@ import {
     Info,
     Edit,
     ViewColumn,
+    X,
 } from '@mui/icons-material';
 import axios from '../../axios';
 import { toast } from 'react-toastify';
@@ -17,7 +18,8 @@ import Modal from '../../components/Modal/Modal';
 import { useStore } from '../../store/store';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 
-export default function ExamsList(props) {
+export default function ExamsQuestions(props) {
+    const { id: examId } = useParams();
     const { data: state } = useStore();
     const [rows, setRows] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -27,7 +29,7 @@ export default function ExamsList(props) {
     const navigate = useNavigate();
 
     React.useEffect(() => {
-        fetchExams();
+        fetchExamsQuestions();
     }, []);
 
     const onClickAddExam = () => {
@@ -51,7 +53,7 @@ export default function ExamsList(props) {
             const res = await axios.delete(`/exams/${activeExam}`);
             console.log(res.data);
             toast.success('Exam deleted successfully');
-            await fetchExams();
+            await fetchExamsQuestions();
         } catch (error) {
             console.log(error);
         }
@@ -59,75 +61,47 @@ export default function ExamsList(props) {
 
     const columns = [
         {
-            field: 'name',
-            headerName: 'Name',
+            field: 'student',
+            headerName: 'student Name',
             flex: 1,
         },
         {
-            field: 'studentName',
-            headerName: 'Student Name',
+            field: 'question',
+            headerName: 'question Name',
             flex: 0.8,
         },
         {
-            field: 'quizTitle',
-            headerName: 'Quiz Title',
+            field: 'answer',
+            headerName: 'answer',
             flex: 1,
         },
         {
-            field: 'isPassed',
-            headerName: 'Is Passed',
+            field: 'isSuccess',
+            headerName: 'Is Success',
             flex: 1,
-        },
-        {
-            field: 'successPercentage',
-            headerName: 'Percentage',
-            flex: 1,
-        },
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            flex: 0.3,
             renderCell: (params) => {
-                return (
-                    <>
-                        <IconButton
-                            aria-label='edit'
-                            color='info'
-                            onClick={() => onClickEditQuestion(params.id)}
-                        >
-                            <ViewColumn />
-                        </IconButton>
-                        <IconButton
-                            aria-label='delete'
-                            color='error'
-                            onClick={() => onDeleteExam(params.id)}
-                        >
-                            <Delete />
-                        </IconButton>
-                    </>
-                );
+                return <div>{params.row.isSuccess ? <CheckBox /> : <X />}</div>;
             },
         },
     ];
 
-    const fetchExams = React.useCallback(async () => {
+    const fetchExamsQuestions = React.useCallback(async () => {
         const data1 = {
             ...state,
         };
         setLoading(true);
         console.log(data1);
-        const res = await axios.get(`/exams`);
+        const res = await axios.get(`/exams/${examId}/questions`);
         const data = res.data;
-        console.log(data.docs);
-        if (!!data.docs.length) {
+        console.log(data);
+        if (!!data.length) {
             setRows(
-                data.docs.map((item) => ({
+                data.map((item) => ({
                     id: item._id,
-                    name: item.name,
-                    studentName: item.studentName,
-                    quizTitle: item.quizTitle,
-                    isPassed: item.isPassed,
-                    successPercentage: item.successPercentage,
+                    student: item.studentTitle,
+                    question: item.questionName,
+                    isSuccess: item.isSuccess,
+                    answer: item.answer,
                     dateModified: new Date(item.createdAt).toLocaleDateString(
                         'en-GB'
                     ),
@@ -148,12 +122,7 @@ export default function ExamsList(props) {
 
             <div className={styles.actionsWrapper}>
                 <div>
-                    <h3>Exams</h3>
-                </div>
-                <div className={styles.actions}>
-                    <Button variant='contained' onClick={onClickAddExam}>
-                        Add Exam
-                    </Button>
+                    <h3>Exam Questions</h3>
                 </div>
             </div>
 
