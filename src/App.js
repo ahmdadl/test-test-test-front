@@ -36,6 +36,9 @@ import TopicsEdit from './pages/TopicsEdit/TopicsEdit';
 import QuizSelectQuestions from './pages/QuizSelectQuestions/QuizSelectQuestions';
 import QuizExam from './pages/QuizExam';
 import QuizCriteria from './pages/QuizCriteria/QuizCriteria';
+import StudentsList from './pages/Students/StudentsList';
+import StudentsAdd from './pages/Students/StudentsAdd';
+import StudentsEdit from './pages/Students/StudentsEdit';
 
 function App() {
     return (
@@ -116,6 +119,13 @@ function App() {
                         <Route path='/topics' Component={TopicsList} />
                         <Route path='/add-topic' Component={TopicsAdd} />
                         <Route path='/edit-topic/:id' Component={TopicsEdit} />
+
+                        <Route path='/students' Component={StudentsList} />
+                        <Route path='/add-student' Component={StudentsAdd} />
+                        <Route
+                            path='/edit-student/:id'
+                            Component={StudentsEdit}
+                        />
 
                         <Route
                             path='/quizzes/:id/select-questions'
