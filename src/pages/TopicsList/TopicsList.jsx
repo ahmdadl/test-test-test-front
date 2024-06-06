@@ -71,6 +71,11 @@ export default function TopicsList(props) {
             flex: 0.8,
         },
         {
+            field: 'questionCount',
+            headerName: 'Questions Count',
+            flex: 1,
+        },
+        {
             field: 'actions',
             headerName: 'Actions',
             flex: 0.3,
