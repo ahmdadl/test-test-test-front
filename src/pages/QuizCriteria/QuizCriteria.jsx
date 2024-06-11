@@ -15,6 +15,13 @@ import { Clear, DesignServices } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import TopicFormSection from './TopicFormSection';
+import TopicQuestionType from './TopicQuestionType';
+import {
+    ActiveQuestionTypes,
+    getDomainName,
+    getSubDomainName,
+} from '../../config';
 
 export default function QuizCriteria(props) {
     const { id: quizId } = useParams();
@@ -28,14 +35,31 @@ export default function QuizCriteria(props) {
 
     const [topics, setTopics] = useState([]);
 
+    const [showTopicForm, setShowTopicForm] = useState(false);
+
+    const [questionTypes, setQuestionTypes] = useState([]);
+
     useEffect(() => {
         getTopics();
     }, []);
 
     const onSubmit = async (values) => {
-        const loaderId = toast.loading('saving..');
+        const loaderId = toast.loading('saving..', {
+            autoClose: 2000,
+        });
 
-        console.log(values);
+        // if a topic was added
+        // then get it`s data before saving
+        if (values.topic) {
+            values.topic = {
+                ...values.topic,
+                domainName: getDomainName(values.topic.domainId),
+                subDomainName: getSubDomainName(
+                    values.topic.domainId,
+                    values.topic.subDomainId
+                ),
+            };
+        }
 
         const res = await axios
             .post(`http://localhost:4000/api/topics-criteria/${quizId}`, values)
@@ -55,7 +79,7 @@ export default function QuizCriteria(props) {
             });
         }
 
-        console.log(res.data);
+        // console.log(res.data);
 
         toast.update(loaderId, {
             render: 'saved',
@@ -75,6 +99,14 @@ export default function QuizCriteria(props) {
         );
         setTopics(res.data);
     };
+
+    function onSelectTopic(e) {
+        if (e.target.value === 'new') {
+            setShowTopicForm(true);
+        } else {
+            setShowTopicForm(false);
+        }
+    }
 
     return (
         <>
@@ -111,6 +143,7 @@ export default function QuizCriteria(props) {
                                     placeholder='select topic'
                                     errors={errors}
                                     defaultValue={0}
+                                    onChange={onSelectTopic}
                                 >
                                     <MenuItem value='0'>Select Topic</MenuItem>
                                     {topics.length > 0 &&
@@ -122,6 +155,18 @@ export default function QuizCriteria(props) {
                                                 {topic.title}
                                             </MenuItem>
                                         ))}
+                                    <MenuItem value='new'>
+                                        <Button
+                                            size='xs'
+                                            style={{
+                                                textAlign: 'center',
+                                                width: '100%',
+                                            }}
+                                            color='warning'
+                                        >
+                                            Add New Topic
+                                        </Button>
+                                    </MenuItem>
                                 </Select>
                             </div>
 
@@ -147,83 +192,38 @@ export default function QuizCriteria(props) {
                             </div>
                         </div>
 
-                        <fieldset>
-                            <legend style={{ fontSize: 'medium' }}>
-                                Questions Type
-                            </legend>
-                            <div className={styles.flexRow}>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='MCQ Questions'
-                                        name='mcqPercentage'
-                                        type='number'
-                                        {...register('mcqPercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='Fill The Blank Questions'
-                                        name='fillTheBlankPercentage'
-                                        type='number'
-                                        {...register('fillTheBlankPercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='True-False Questions'
-                                        name='trueFalsePercentage'
-                                        type='number'
-                                        {...register('trueFalsePercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                            </div>
-                        </fieldset>
+                        {showTopicForm && (
+                            <TopicFormSection register={register} />
+                        )}
 
-                        <fieldset>
-                            <legend style={{ fontSize: 'medium' }}>
-                                Questions Complexity
-                            </legend>
-                            <div className={styles.flexRow}>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='Easy Questions'
-                                        name='easyPercentage'
-                                        type='number'
-                                        {...register('easyPercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='Medium Questions'
-                                        name='mediumPercentage'
-                                        type='number'
-                                        {...register('mediumPercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                                <div style={{ width: '30%' }}>
-                                    <TextField
-                                        style={{ width: '100%' }}
-                                        label='Hard Questions'
-                                        name='hardPercentage'
-                                        type='number'
-                                        {...register('hardPercentage')}
-                                        errors={errors}
-                                    />
-                                </div>
-                            </div>
-                        </fieldset>
+                        {questionTypes.length > 0 &&
+                            questionTypes.map((qt, idx) => (
+                                <TopicQuestionType
+                                    register={register}
+                                    // questionType={qt}
+                                    index={idx}
+                                    key={idx}
+                                />
+                            ))}
 
-                        <div className={styles.actions}>
+                        {questionTypes.length < ActiveQuestionTypes.length && (
+                            <Button
+                                variant='contained'
+                                type='button'
+                                onClick={() =>
+                                    setQuestionTypes([...questionTypes, {}])
+                                }
+                            >
+                                Add Question Type
+                            </Button>
+                        )}
+
+                        <div
+                            style={{
+                                width: '100%',
+                                marginTop: '2rem',
+                            }}
+                        >
                             <Button
                                 variant='contained'
                                 startIcon={<DesignServices />}

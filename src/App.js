@@ -55,7 +55,7 @@ function App() {
                     }}
                 >
                     <Navbar />
-                    <ToastContainer />
+                    <ToastContainer autoClose={2000} closeButton={true} />
                     <Routes>
                         <Route path='/' Component={Home} />
                         <Route path='/true-false' Component={TrueFalse} />
