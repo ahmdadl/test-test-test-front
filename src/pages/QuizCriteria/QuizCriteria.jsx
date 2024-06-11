@@ -61,6 +61,9 @@ export default function QuizCriteria(props) {
             };
         }
 
+        values.selectedQuestions =
+            document.querySelector('[name="selectedQuestions"]')?.value ?? '';
+
         const res = await axios
             .post(`http://localhost:4000/api/topics-criteria/${quizId}`, values)
             .catch((err) =>

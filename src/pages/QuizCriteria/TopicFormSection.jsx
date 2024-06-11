@@ -181,10 +181,10 @@ export default function TopicFormSection({ register }) {
                     </div>
                 </div>
 
-                <Input
+                <input
                     type='hidden'
                     {...register('selectedQuestions')}
-                    value={questions.join(',') ?? ''}
+                    value={questions?.join(',') ?? ''}
                 />
 
                 <div style={{ margin: '1rem 0' }}>
