@@ -19,7 +19,11 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import TopicFormSection from './TopicFormSection';
 
-export default function TopicQuestionType({ register, index }) {
+export default function TopicQuestionType({
+    register,
+    index,
+    allQuestionTypes,
+}) {
     const [selectedQuestionType, setSelectedQuestionType] = useState(null);
 
     return (
@@ -47,9 +51,9 @@ export default function TopicQuestionType({ register, index }) {
                             style={{ width: '100%' }}
                             {...register(`questionTypes[${index}.type]`)}
                         >
-                            {ActiveQuestionTypes?.map((q, idx) => (
-                                <MenuItem key={q.value} value={q.value}>
-                                    {q.label}
+                            {allQuestionTypes?.map((q, idx) => (
+                                <MenuItem key={q.typeName} value={q.typeName}>
+                                    {q.typeName}
                                 </MenuItem>
                             ))}
                         </Select>

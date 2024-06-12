@@ -37,10 +37,13 @@ export default function QuizCriteria(props) {
 
     const [showTopicForm, setShowTopicForm] = useState(false);
 
+    const [allQuestionTypes, setAllQuestionTypes] = useState([]);
+
     const [questionTypes, setQuestionTypes] = useState([]);
 
     useEffect(() => {
         getTopics();
+        getAllQuestionTypes();
     }, []);
 
     const onSubmit = async (values) => {
@@ -101,6 +104,14 @@ export default function QuizCriteria(props) {
             'http://localhost:4000/api/topics?paginate=false'
         );
         setTopics(res.data);
+    };
+
+    const getAllQuestionTypes = async () => {
+        const res = await axios.get(
+            'http://localhost:4000/api/interactive-object-types?paginate=false'
+        );
+        console.log(res.data);
+        setAllQuestionTypes(res.data);
     };
 
     function onSelectTopic(e) {
@@ -203,6 +214,7 @@ export default function QuizCriteria(props) {
                             questionTypes.map((qt, idx) => (
                                 <TopicQuestionType
                                     register={register}
+                                    allQuestionTypes={allQuestionTypes}
                                     // questionType={qt}
                                     index={idx}
                                     key={idx}
