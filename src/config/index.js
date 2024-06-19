@@ -180,7 +180,7 @@ const getDomainName = (domainId) =>
     domainList.find((domain) => domain.id === domainId)?.name || '';
 
 const getSubDomainName = (domainId, subDomainId) =>
-    subDomainList[domainId].find((subDomain) => subDomain.id === subDomainId)
+    subDomainList[domainId]?.find((subDomain) => subDomain.id === subDomainId)
         ?.name || '';
 
 const ActiveQuestionTypes = [

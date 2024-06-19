@@ -23,6 +23,7 @@ export default function TopicQuestionType({
     register,
     index,
     allQuestionTypes,
+    area,
 }) {
     const [selectedQuestionType, setSelectedQuestionType] = useState(null);
 
@@ -49,7 +50,9 @@ export default function TopicQuestionType({
                             name='questionTypeId'
                             placeholder='Select Domain'
                             style={{ width: '100%' }}
-                            {...register(`questionTypes[${index}.type]`)}
+                            {...register(
+                                `areas[${area}].questionTypes[${index}.type]`
+                            )}
                         >
                             {allQuestionTypes?.map((q, idx) => (
                                 <MenuItem key={q.typeName} value={q.typeName}>
@@ -72,7 +75,9 @@ export default function TopicQuestionType({
                             label='Easy Questions'
                             name='easyPercentage'
                             type='number'
-                            {...register(`questionTypes[${index}.easy]`)}
+                            {...register(
+                                `areas[${area}].questionTypes[${index}.easy]`
+                            )}
                         />
                     </div>
                     <div style={{ width: '30%' }}>
@@ -81,7 +86,9 @@ export default function TopicQuestionType({
                             label='Medium Questions'
                             name='mediumPercentage'
                             type='number'
-                            {...register(`questionTypes[${index}.medium]`)}
+                            {...register(
+                                `areas[${area}].questionTypes[${index}.medium]`
+                            )}
                         />
                     </div>
                     <div style={{ width: '30%' }}>
@@ -90,7 +97,9 @@ export default function TopicQuestionType({
                             label='Hard Questions'
                             name='hardPercentage'
                             type='number'
-                            {...register(`questionTypes[${index}.hard]`)}
+                            {...register(
+                                `areas[${area}].questionTypes[${index}.hard]`
+                            )}
                         />
                     </div>
                 </div>

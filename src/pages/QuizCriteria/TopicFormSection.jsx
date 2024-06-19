@@ -18,7 +18,7 @@ import axios from 'axios';
 import { RadioButtonCheckedRounded } from '@mui/icons-material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-export default function TopicFormSection({ register }) {
+export default function TopicFormSection({ register, area }) {
     const [domain, setDomain] = useState(domainList[0]);
 
     const [loading, setLoading] = React.useState(false);
@@ -128,7 +128,7 @@ export default function TopicFormSection({ register }) {
                         type='text'
                         style={{ width: '100%', marginBottom: '1.5rem' }}
                         placeholder='Enter Topic Title'
-                        {...register('topic.title')}
+                        {...register(`areas[${area}].topic.title`)}
                     />
                     <div className={styles.flexRow}>
                         <div style={{ width: '45%' }}>
@@ -138,7 +138,7 @@ export default function TopicFormSection({ register }) {
                                 name='domainId'
                                 placeholder='Select Domain'
                                 style={{ width: '100%' }}
-                                {...register('topic.domainId')}
+                                {...register(`areas[${area}].topic.domainId`)}
                                 onChange={(e) =>
                                     setDomain(
                                         domainList.find(
@@ -164,7 +164,9 @@ export default function TopicFormSection({ register }) {
                                 name='subDomainId'
                                 style={{ width: '100%' }}
                                 placeholder='Select Sub Domain'
-                                {...register('topic.subDomainId')}
+                                {...register(
+                                    `areas[${area}].topic.subDomainId`
+                                )}
                             >
                                 {subDomainList?.[domain.id]?.map(
                                     (subDomain, idx) => (
@@ -183,7 +185,7 @@ export default function TopicFormSection({ register }) {
 
                 <input
                     type='hidden'
-                    {...register('selectedQuestions')}
+                    {...register(`areas[${area}].selectedQuestions`)}
                     value={questions?.join(',') ?? ''}
                 />
 
