@@ -118,7 +118,9 @@ export default function QuizExamsList(props) {
         setLoading(true);
         console.log(data1);
         const res = await axios.get(`/exams`, {
-            quizId: quizId,
+            params: {
+                quiz: quizId,
+            },
         });
         const data = res.data;
         console.log(data.docs);
