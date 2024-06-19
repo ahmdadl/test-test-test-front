@@ -61,7 +61,7 @@ export default function QuizSelectQuestions(props) {
             type: 'success',
             isLoading: false,
         });
-        navigate(`/edit-quiz-list/${quizId}`);
+        navigate(`/show/${quizId}`);
     };
 
     const onClickEditQuestion = (id = null) => {

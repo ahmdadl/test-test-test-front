@@ -25,6 +25,9 @@ const Show = (props) => {
     const onClickUseCriteria = () => {
         navigate(`/quizzes/${quizId}/criteria`);
     };
+    const selectFromAllQuestions = () => {
+        navigate(`/quizzes/${quizId}/select-questions`);
+    };
 
     return (
         <div className={`container  ${styles.home}`}>
@@ -44,6 +47,13 @@ const Show = (props) => {
                     onClick={onClickUseCriteria}
                 >
                     <span>use Criteria</span>
+                </Button>
+                <Button
+                    variant='contained'
+                    color='warning'
+                    onClick={selectFromAllQuestions}
+                >
+                    <span>Select from All Questions</span>
                 </Button>
                 <Button
                     variant='contained'

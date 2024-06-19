@@ -9,7 +9,7 @@ import {
     Info,
     Edit,
     ViewColumn,
-    X,
+    Close,
 } from '@mui/icons-material';
 import axios from '../../axios';
 import { toast } from 'react-toastify';
@@ -80,7 +80,9 @@ export default function ExamsQuestions(props) {
             headerName: 'Is Success',
             flex: 1,
             renderCell: (params) => {
-                return <div>{params.row.isSuccess ? <CheckBox /> : <X />}</div>;
+                return (
+                    <div>{params.row.isSuccess ? <CheckBox /> : <Close />}</div>
+                );
             },
         },
     ];

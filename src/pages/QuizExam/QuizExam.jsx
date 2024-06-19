@@ -9,7 +9,7 @@ import {
     Info,
     Edit,
     Check,
-    X,
+    Close,
     Error,
 } from '@mui/icons-material';
 import axios from '../../axios';
