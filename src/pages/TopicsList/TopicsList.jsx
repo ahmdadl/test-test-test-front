@@ -70,11 +70,11 @@ export default function TopicsList(props) {
             headerName: 'Sub Domain',
             flex: 0.8,
         },
-        {
-            field: 'questionCount',
-            headerName: 'Questions Count',
-            flex: 1,
-        },
+        // {
+        //     field: 'questionCount',
+        //     headerName: 'Questions Count',
+        //     flex: 1,
+        // },
         {
             field: 'actions',
             headerName: 'Actions',

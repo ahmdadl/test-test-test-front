@@ -81,7 +81,13 @@ export default function ExamsQuestions(props) {
             flex: 1,
             renderCell: (params) => {
                 return (
-                    <div>{params.row.isSuccess ? <CheckBox /> : <Close />}</div>
+                    <div>
+                        {params.row.isSuccess ? (
+                            <CheckBox color='success' />
+                        ) : (
+                            <Close color='error' />
+                        )}
+                    </div>
                 );
             },
         },

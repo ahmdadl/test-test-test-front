@@ -53,16 +53,6 @@ export default function QuizExamQuestionSection({
                     <p>Please Answer all your quiz questions</p>
 
                     <div style={{ width: '60%' }}>
-                        <Input
-                            label='Exam Name'
-                            name='examName'
-                            placeholder='Exam Name'
-                            id='examName'
-                            type='text'
-                            style={{ width: '100%', marginBottom: '2.3rem' }}
-                            defaultValue={activeStudent?.exam ?? ''}
-                        />
-
                         <FormControl fullWidth>
                             <InputLabel id='demo-simple-select-label'>
                                 Select Student

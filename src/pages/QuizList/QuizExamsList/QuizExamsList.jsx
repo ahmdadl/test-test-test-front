@@ -60,11 +60,6 @@ export default function QuizExamsList(props) {
 
     const columns = [
         {
-            field: 'name',
-            headerName: 'Name',
-            flex: 1,
-        },
-        {
             field: 'studentName',
             headerName: 'Student Name',
             flex: 0.8,
@@ -128,7 +123,6 @@ export default function QuizExamsList(props) {
             setRows(
                 data.docs.map((item) => ({
                     id: item._id,
-                    name: item.name,
                     studentName: item.studentName,
                     quizTitle: item.quizTitle,
                     isPassed: item.isPassed,

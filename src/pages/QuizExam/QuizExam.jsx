@@ -82,6 +82,7 @@ export default function QuizSelectQuestions(props) {
         console.log(res.data);
 
         const data = res.data;
+        console.log(data);
         setQuestions([...data.filter((x) => x.parameters)]);
         // console.log(data);
         setLoading(false);
