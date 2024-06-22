@@ -1,11 +1,7 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
 import styles from "./navbar.module.scss";
 
@@ -18,32 +14,34 @@ const Navbar = () => {
           backgroundColor: "#343a40",
         }}
       >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+        <div
+          style={{
+            display: "flex",
+            gap: 20,
+            alignItems: "center",
+            padding: '1rem'
+          }}
+        >
+          <Link
+            to="/"
+            style={{
+              color: "#fff",
+              textDecoration: "none",
+              fontWeight: "bold",
+            }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link
-              to="/"
-              style={{
-                color: "#fff",
-                textDecoration: "none",
-              }}
-            >
-              <div className={styles["logo-box"]}>
-                {/* <img src="/assets/logo.png" alt="logo" /> */}
-                <h2 style={{bottom: 600}}>Quiz system</h2>
-              </div>
-            </Link>
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
+            <div>Quiz system</div>
+          </Link>
+          <Link
+            to="/topics"
+            style={{
+              color: "#fff",
+              textDecoration: "none",
+            }}
+          >
+            Topics
+          </Link>
+        </div>
       </AppBar>
     </Box>
   );
